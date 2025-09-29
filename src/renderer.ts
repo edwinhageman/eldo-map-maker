@@ -43,7 +43,6 @@ export class CanvasRenderer {
     this.ctx.lineWidth = 0.2;
     this.ctx.stroke();
     if (tile.type === "selected") {
-      console.log("tester");
       this.ctx.fillStyle = "#000";
       this.ctx.fill();
       this.ctx.fillStyle = "rgb(247 247 247)";
@@ -154,7 +153,7 @@ export class RenderLoop {
 
   private readonly tick = (time: number) => this.frame(time);
 
-  private onUpdate?: (dt: number) => void;
+  private readonly onUpdate?: (dt: number) => void;
   private lastTime: number | null = null;
 
   constructor(
@@ -197,9 +196,7 @@ export class RenderLoop {
     }
 
     const selected = this.input.getSelected();
-    // console.log("selected", selected);
     if (selected && this.grid.has(selected)) {
-      console.log("selected", selected);
       const tile = this.grid.get(selected)!;
       this.grid.add(tile.hex, new HexTile(tile.hex, "selected", 1));
     }

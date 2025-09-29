@@ -27,13 +27,6 @@ export class InputHandler {
     this.renderer = renderer;
     this.layout = layout;
     this.camera = camera;
-
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseMove = this.onMouseMove.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
-    this.onClick = this.onClick.bind(this);
-    this.onWheel = this.onWheel.bind(this);
   }
 
   attach() {
@@ -56,19 +49,19 @@ export class InputHandler {
     this.canvas.removeEventListener("wheel", this.onWheel);
   }
 
-  getMousePoint(evt: MouseEvent | WheelEvent) {
+  getMousePoint = (evt: MouseEvent | WheelEvent) => {
     const rect = this.canvas.getBoundingClientRect();
     return new Point(evt.clientX - rect.left, evt.clientY - rect.top);
-  }
+  };
 
-  onMouseDown(evt: MouseEvent) {
+  onMouseDown = (evt: MouseEvent) => {
     if (evt.button === 0 || evt.button === 1) {
       this.isPanning = true;
       this.lastMouse = this.getMousePoint(evt);
     }
-  }
+  };
 
-  onMouseMove(evt: MouseEvent) {
+  onMouseMove = (evt: MouseEvent) => {
     const p = this.getMousePoint(evt);
 
     if (this.isPanning && this.lastMouse) {
@@ -78,25 +71,24 @@ export class InputHandler {
       this.camera.pan(-dxScreen * invZoom, -dyScreen * invZoom);
       this.lastMouse = p;
     }
-  }
+  };
 
-  onMouseUp(_: MouseEvent) {
+  onMouseUp = (_: MouseEvent) => {
     this.isPanning = false;
     this.lastMouse = null;
-  }
+  };
 
-  onMouseLeave(_: MouseEvent) {
+  onMouseLeave = (_: MouseEvent) => {
     this.isPanning = false;
     this.lastMouse = null;
-  }
+  };
 
-  onClick(evt: MouseEvent) {
+  onClick = (evt: MouseEvent) => {
     const p = this.getMousePoint(evt);
     this.selected = this.screenToHex(p);
-  }
+  };
 
-  onWheel(evt: WheelEvent) {
-    evt.preventDefault();
+  onWheel = (evt: WheelEvent) => {
     const anchor = this.getMousePoint(evt);
     const current = this.camera.getZoom();
     const factor = evt.deltaY < 0 ? this.zoomStep : 1 / this.zoomStep;
@@ -105,7 +97,7 @@ export class InputHandler {
       Math.max(this.minZoom, current * factor),
     );
     this.camera.setZoom(next, anchor);
-  }
+  };
 
   screenToHex(p: Point) {
     const world = this.camera.screenToWorld(p);

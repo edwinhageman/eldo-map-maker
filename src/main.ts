@@ -41,5 +41,6 @@ grid.add(h7, new HexTile(h7, "f", 1));
 
 const input = new InputHandler(canvas, renderer, layout, camera);
 input.attach();
+
 const loop = new RenderLoop(renderer, input, grid);
 loop.start();

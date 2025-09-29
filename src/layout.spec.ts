@@ -24,7 +24,6 @@ describe("Pointy top layout tests", () => {
 
   it("polygonCorners should return correct corners", () => {
     const result = layout.polygonCorners(new Hex(0, 0));
-    console.log(result);
-    // expect(result.length).toBe(6);
+    expect(result.length).toBe(6);
   });
 });
