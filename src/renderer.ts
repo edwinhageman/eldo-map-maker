@@ -20,13 +20,15 @@ export class CanvasRenderer {
     this.layout = layout;
     this.camera = camera;
 
+    // this.canvas.width = window.innerWidth;
+    // this.canvas.height = window.innerHeight;
+
     const dpr = window.devicePixelRatio;
     const rect = this.canvas.getBoundingClientRect();
     this.canvas.width = rect.width * dpr;
     this.canvas.height = rect.height * dpr;
     this.ctx.scale(dpr, dpr);
-    this.ctx.imageSmoothingEnabled = true;
-
+    //
     this.canvas.style.width = `${rect.width}px`;
     this.canvas.style.height = `${rect.height}px`;
   }
@@ -108,8 +110,9 @@ export class Camera {
 
   screenToWorld(point: Point) {
     const inv = 1 / this.zoom;
-    const x = (this.position.x + point.x) * inv;
-    const y = (this.position.y + point.y) * inv;
+    const x = this.position.x + point.x * inv;
+    const y = this.position.y + point.y * inv;
+    console.log(point.x, point.y, inv, x, y);
     return new Point(x, y);
   }
 
@@ -195,14 +198,14 @@ export class RenderLoop {
       this.onUpdate(dt);
     }
 
+    this.renderer.clear();
+    this.renderer.drawGrid(this.grid);
+
     const selected = this.input.getSelected();
     if (selected && this.grid.has(selected)) {
       const tile = this.grid.get(selected)!;
-      this.grid.add(tile.hex, new HexTile(tile.hex, "selected", 1));
+      this.renderer.drawHex(new HexTile(tile.hex, "selected", 1));
     }
-
-    this.renderer.clear();
-    this.renderer.drawGrid(this.grid);
 
     this.requestId = requestAnimationFrame(this.tick);
   }

@@ -86,6 +86,7 @@ export class InputHandler {
   onClick = (evt: MouseEvent) => {
     const p = this.getMousePoint(evt);
     this.selected = this.screenToHex(p);
+    console.log(this.selected);
   };
 
   onWheel = (evt: WheelEvent) => {
